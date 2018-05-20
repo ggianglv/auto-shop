@@ -1,0 +1,14 @@
+
+
+footer {
+  margin-top: 35px;
+}
+
+footer .footer-copyright {
+  background-color: rgb(50, 55, 64);
+  color: white;
+}
+
+.text-small {
+  font-size: 14px;
+}

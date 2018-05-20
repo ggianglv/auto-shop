@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->boolean('status')->default(false);
             $table->integer('price');
             $table->timestamps();
         });

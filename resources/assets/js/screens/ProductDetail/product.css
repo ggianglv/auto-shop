@@ -1,0 +1,31 @@
+.thumbnails {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+}
+
+.thumbnails img {
+  object-fit: cover;
+}
+
+.car-price-right {
+  padding: 20px;
+  border: 1px solid;
+  background-color: #e6e6e6;
+  border-radius: 3px;
+}
+
+.car-price-right .text {
+  font-size: 18px;
+  color: #f1632b;
+}
+
+.detail-car-info .detail-car-meta {
+  color: rgb(158, 158, 158);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.detail-car-info .detail-car-meta .meta-value {
+  color: #333;
+}

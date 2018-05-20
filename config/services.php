@@ -19,6 +19,18 @@ return [
         'secret' => env('MAILGUN_SECRET'),
     ],
 
+    'google' => [
+        'client_id' => '436676563344-h8crdmr92i05h0kmp02rqnnurdemsli3.apps.googleusercontent.com',
+        'client_secret' => 'yYUd9TehagSGbmls4qllFqw6',
+        'redirect' => 'http://localhost:3000',
+    ],
+
+    'facebook' => [
+        'client_id' => '109516576592353',
+        'client_secret' => 'd2f420e19af147bce71215e8c64875ce',
+        'redirect' => 'https://shop.test',
+    ],
+
     'ses' => [
         'key' => env('SES_KEY'),
         'secret' => env('SES_SECRET'),

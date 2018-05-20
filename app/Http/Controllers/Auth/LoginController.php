@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\UserSocial;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,10 +65,14 @@ class LoginController extends Controller
                 Rule::in('facebook', 'google')
             ]
         ]);
-        $socialUser = Socialite::driver($request->get('provider'))->userFromToken($request->get('access_token'));
+        $requestedUser = Socialite::driver($request->get('provider'))->userFromToken($request->get('access_token'));
         $user = User::firstOrCreate([
-            'email' => $socialUser->getEmail(),
+            'email' => $requestedUser->getEmail(),
         ]);
+        UserSocial::firstOrCreate([
+            'social_id' => $requestedUser->getId(),
+            'provider' => $request->get('provider'),
+        ], ['user_id' => $user->id]);
         $user->token = $user->createToken('Token')->accessToken;
 
         return $user;

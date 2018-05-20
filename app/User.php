@@ -6,14 +6,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends \TCG\Voyager\Models\User
 {
     protected $guarded = ['id'];
 
     use HasApiTokens, Notifiable;
 
-    const ROLE_USER = 1;
-    const ROLE_ADMIN = 2;
+    const ROLE_USER = 0;
+    const ROLE_ADMIN = 1;
 
     /**
      * The attributes that are mass assignable.

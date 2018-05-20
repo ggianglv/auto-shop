@@ -16,7 +16,6 @@ class UsersTableSeeder extends Seeder
             'email' => 'hien@gmail.com',
             'phone' => '01234567890',
             'password' => bcrypt('123123'),
-            'role' => \App\User::ROLE_USER,
         ]);
     }
 }
