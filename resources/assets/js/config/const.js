@@ -1,1 +1,1 @@
-export const baseUrl = process.env.NODE_ENV === 'development' ? 'https://shop.test' : 'http://13.229.114.113'
+export const baseUrl = process.env.NODE_ENV === 'development' ? 'https://shop.test' : 'http://car.marnology.com'

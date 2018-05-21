@@ -33,4 +33,7 @@ export const routes = {
   404: '/404',
   login: '/login',
   register: '/register',
+  product: {
+    create: '/product/create',
+  }
 }

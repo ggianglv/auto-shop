@@ -13,3 +13,4 @@ yarn-error.log
 .env
 composer.lock
 !/composer.lock
+/public/js/

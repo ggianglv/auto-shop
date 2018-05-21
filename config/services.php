@@ -22,7 +22,7 @@ return [
     'google' => [
         'client_id' => '436676563344-h8crdmr92i05h0kmp02rqnnurdemsli3.apps.googleusercontent.com',
         'client_secret' => 'yYUd9TehagSGbmls4qllFqw6',
-        'redirect' => 'http://localhost:3000',
+        'redirect' => 'https://shop.test',
     ],
 
     'facebook' => [

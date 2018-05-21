@@ -1,12 +1,54 @@
 import React from 'react'
 import DefaultLayout from '../../components/Layout/DefaultLayout'
-import { routes } from '../../config/route'
-import { Link } from 'react-router-dom'
+import {routes} from '../../config/route'
+import {Link} from 'react-router-dom'
+import {socialLogin} from '../../services/user'
+import {setUser} from '../../actions/user'
+import {connect} from 'react-redux'
 
 class Register extends React.PureComponent {
+  componentDidMount() {
+    window.gapi.load('auth2', () => {
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      this.auth2 = window.gapi.auth2.init({
+        client_id: '436676563344-h8crdmr92i05h0kmp02rqnnurdemsli3.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin'
+      })
+
+      this.auth2.attachClickHandler(this.googleBtn, {},
+        (googleUser) => {
+          const response = googleUser.getAuthResponse()
+          const accessToken = response.id_token
+          this.loginWithSocial('google', accessToken)
+        }, (error) => {
+          console.log('error')
+        })
+    })
+  }
+
+  loginWithSocial = async (provider, accessToken) => {
+    const user = await socialLogin({
+      provider,
+      access_token: accessToken
+    })
+    this.props.setUser(user)
+  }
+
   onFormSubmit = (event) => {
     event.preventDefault()
-    console.log(111)
+  }
+
+  onFbLogin = () => {
+    window.FB.getLoginStatus((response) => {
+      if (response.status !== 'connected') {
+        return window.FB.login((res) => {
+          const accessToken = res.authResponse.accessToken
+          this.loginWithSocial('facebook', accessToken)
+        }, {scope: 'email'})
+      }
+      const accessToken = response.authResponse.accessToken
+      this.loginWithSocial('facebook', accessToken)
+    })
   }
 
   render() {
@@ -23,30 +65,32 @@ class Register extends React.PureComponent {
 
                       <div className="form-group">
                         <label htmlFor="name">Name</label>
-                        <input id="name" type="text" className="form-control" name="name" required autoFocus />
+                        <input id="name" type="text" className="form-control" name="name" required autoFocus/>
                       </div>
 
                       <div className="form-group">
                         <label htmlFor="email">E-Mail Address</label>
-                        <input id="email" type="email" className="form-control" name="email" required />
+                        <input id="email" type="email" className="form-control" name="email" required/>
                       </div>
 
                       <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <input id="password" type="password" className="form-control" name="password" required
-                               data-eye />
+                               data-eye/>
                       </div>
 
                       <div className="form-group">
                         <div className="row">
                           <div className="col-6">
-                            <button type="button" className="btn btn-primary btn-block btn-sm facebook">
+                            <button onClick={this.onFbLogin} type="button"
+                                    className="btn btn-primary btn-block btn-sm facebook">
                               Facebook
                             </button>
                           </div>
 
                           <div className="col-6">
-                            <button type="button" className="btn btn-primary btn-block btn-sm google">
+                            <button ref={ref => this.googleBtn = ref} type="button"
+                                    className="btn btn-primary btn-block btn-sm google">
                               Google
                             </button>
                           </div>
@@ -72,4 +116,8 @@ class Register extends React.PureComponent {
   }
 }
 
-export default Register
+const mapDispatchToProps = dispatch => ({
+  setUser: (user) => dispatch(setUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(Register)

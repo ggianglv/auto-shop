@@ -65,16 +65,44 @@ class LoginController extends Controller
                 Rule::in('facebook', 'google')
             ]
         ]);
-        $requestedUser = Socialite::driver($request->get('provider'))->userFromToken($request->get('access_token'));
+        $token = $request->get('access_token');
+        if ($request->get('provider') === 'facebook') {
+            $socialUser = $this->getFbUser($token);
+        } else {
+            $socialUser = $this->getGoogleUser($token);
+        }
         $user = User::firstOrCreate([
-            'email' => $requestedUser->getEmail(),
+            'email' => $socialUser['email'],
         ]);
         UserSocial::firstOrCreate([
-            'social_id' => $requestedUser->getId(),
+            'social_id' => $socialUser['social_id'],
             'provider' => $request->get('provider'),
         ], ['user_id' => $user->id]);
         $user->token = $user->createToken('Token')->accessToken;
 
         return $user;
+    }
+
+    private function getFbUser($token)
+    {
+        $requestedUser = Socialite::driver('facebook')->userFromToken($token);
+
+        return [
+            'email' => $requestedUser->getEmail(),
+            'social_id' => $requestedUser->getId(),
+            'provider' => 'facebook',
+        ];
+    }
+
+    private function getGoogleUser($token)
+    {
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' . $token);
+        $requestedUser = json_decode($res->getBody(), true);
+        return [
+            'email' => $requestedUser['email'],
+            'social_id' => $requestedUser['sub'],
+            'provider' => 'facebook',
+        ];
     }
 }

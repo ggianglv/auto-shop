@@ -22,17 +22,16 @@ class Login extends React.PureComponent {
           const accessToken = response.id_token
           this.loginWithSocial('google', accessToken)
         }, (error) => {
-          console.log(2222)
+          console.log('error')
         })
     })
   }
 
   loginWithSocial = async (provider, accessToken) => {
-    const user = socialLogin({
+    const user = await socialLogin({
       provider,
       access_token: accessToken
     })
-    console.log(user)
     this.props.setUser(user)
   }
 
