@@ -5,39 +5,6 @@ import {fetchProductDetail} from '../../actions/products'
 import './product.css'
 import {connect} from 'react-redux'
 
-const items = [
-  {
-    icon: 'fas fa-anchor',
-    key: 'Tình trạng',
-    value: 'Cũ'
-  },
-  {
-    icon: 'fas fa-anchor',
-    key: 'Km đã đi',
-    value: '15km'
-  },
-  {
-    icon: 'fas fa-anchor',
-    key: 'Hộp số',
-    value: 'Tự động'
-  },
-  {
-    icon: 'fas fa-anchor',
-    key: 'nhiên Liệu',
-    value: 'Xăng'
-  },
-  {
-    icon: 'fas fa-anchor',
-    key: 'Năm sản xuất',
-    value: '206'
-  },
-  {
-    icon: 'fas fa-anchor',
-    key: 'Xuất xứ',
-    value: 'Nhập khẩu'
-  }
-]
-
 class Product extends Component {
   state = {
     imageIndex: 0
@@ -58,7 +25,7 @@ class Product extends Component {
               <div className="detail-car-info w-100">
                 <h1>{product.name}</h1>
                 <div className="detail-car-meta d-flex justify-content-between">
-                  {items.map((item, index) => (
+                  {product.details.slice(0, 8).map((item, index) => (
                     <div key={index} className="meta-item">
                       <i className={`${item.icon} mr-2`}/>
                       <span>{item.key}:</span>

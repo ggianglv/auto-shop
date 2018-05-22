@@ -7,6 +7,7 @@ import HomePage from '../screens/Home'
 import ProductPage from '../screens/ProductDetail'
 import LoginPage from '../screens/Login'
 import RegisterPage from '../screens/Register'
+import CreateProduct from '../screens/CreateProduct'
 
 
 export const history = createBrowserHistory()
@@ -20,6 +21,7 @@ export default () => (
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/xe/:slug" component={ProductPage} />
+          <Route exact path="/product/create" component={CreateProduct} />
           <Redirect to="/404" />
         </Switch>
       </CSSTransition>

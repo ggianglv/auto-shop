@@ -32,6 +32,7 @@ class Register extends React.PureComponent {
       access_token: accessToken
     })
     this.props.setUser(user)
+    this.props.history.push('/')
   }
 
   onFormSubmit = (event) => {
