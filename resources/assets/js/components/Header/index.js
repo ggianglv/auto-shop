@@ -16,9 +16,14 @@ class Header extends React.PureComponent {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav mr-auto">
               {this.props.user.id ? (
-                <li className="nav-item">
-                  <Link to={routes.product.create}>Rao bán oto</Link>
-                </li>
+                <React.Fragment>
+                  <li className="nav-item">
+                    <Link to={routes.product.create}>Rao bán oto</Link>
+                  </li>
+                  <li className="nav-item ml-2">
+                    <Link to={routes.changePassword}>Đổi mật khẩu</Link>
+                  </li>
+                </React.Fragment>
               ) : (
                 <React.Fragment>
                   <li className="nav-item">

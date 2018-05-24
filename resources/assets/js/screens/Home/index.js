@@ -42,6 +42,7 @@ class Home extends Component {
   render() {
     const { list } = this.props.products
 
+
     return (
       <DefaultLayout>
         <main role="main" className="container">

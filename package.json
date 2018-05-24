@@ -38,6 +38,7 @@
         "react-transition-group": "^2.3.1",
         "redux": "^4.0.0",
         "redux-logger": "^3.0.6",
+        "redux-persist": "^5.9.1",
         "redux-saga": "^0.16.0",
         "redux-thunk": "^2.2.0",
         "yarn": "^1.6.0"

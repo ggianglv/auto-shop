@@ -61,21 +61,21 @@ class Register extends React.PureComponent {
               <div className="card-wrapper">
                 <div className="card fat">
                   <div className="card-body">
-                    <h4 className="card-title">Register</h4>
+                    <h4 className="card-title">Đăng ký</h4>
                     <form onSubmit={this.onFormSubmit}>
 
                       <div className="form-group">
-                        <label htmlFor="name">Name</label>
+                        <label htmlFor="name">Tên</label>
                         <input id="name" type="text" className="form-control" name="name" required autoFocus/>
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="email">E-Mail Address</label>
+                        <label htmlFor="email">Email</label>
                         <input id="email" type="email" className="form-control" name="email" required/>
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">Mật khẩu</label>
                         <input id="password" type="password" className="form-control" name="password" required
                                data-eye/>
                       </div>

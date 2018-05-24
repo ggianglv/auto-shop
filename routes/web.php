@@ -13,10 +13,7 @@
 
 Route::resource('products', 'ProductController');
 
-Route::get('/', 'HomeController@index');
-Route::get('/login', 'HomeController@index');
-Route::get('/register', 'HomeController@index');
-Route::get('/product/create', 'HomeController@index');
+Route::get('/{any?}', 'HomeController@index');
 
 
 Route::group(['prefix' => 'admin'], function () {

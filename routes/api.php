@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login', 'Auth\LoginController@login');
 
 Route::post('/social-login', 'Auth\LoginController@socialLogin');
+Route::post('/change-password', 'Auth\ChangePasswordController@change')->middleware('auth:api');
