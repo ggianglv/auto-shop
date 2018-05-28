@@ -11,11 +11,10 @@
 |
 */
 
-Route::resource('products', 'ProductController');
-
-Route::get('/{any?}', 'HomeController@index');
-
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+Route::resource('products', 'ProductController');
+
+Route::get('/{any?}', 'HomeController@index');

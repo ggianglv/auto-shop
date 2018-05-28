@@ -2,11 +2,18 @@ import React from 'react'
 import DefaultLayout from '../../components/Layout/DefaultLayout'
 import {routes} from '../../config/route'
 import {Link} from 'react-router-dom'
-import {socialLogin} from '../../services/user'
+import {register, socialLogin} from '../../services/user'
 import {setUser} from '../../actions/user'
 import {connect} from 'react-redux'
 
 class Register extends React.PureComponent {
+  state = {
+    name: '',
+    email: '',
+    password: '',
+    message: {}
+  }
+
   componentDidMount() {
     window.gapi.load('auth2', () => {
       // Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -26,6 +33,12 @@ class Register extends React.PureComponent {
     })
   }
 
+  onInputChange = (field) => (event) => {
+    this.setState({
+      [field]: event.target.value
+    })
+  }
+
   loginWithSocial = async (provider, accessToken) => {
     const user = await socialLogin({
       provider,
@@ -35,8 +48,25 @@ class Register extends React.PureComponent {
     this.props.history.push('/')
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = async (event) => {
     event.preventDefault()
+    const {name, email, password} = this.state
+    try {
+      const user = await register({
+        name,
+        email,
+        password
+      })
+      this.props.setUser(user)
+      this.props.history.push('/')
+    } catch (e) {
+      this.setState({
+        message: {
+          type: 'danger',
+          text: e.response.data.errors.email[0]
+        }
+      })
+    }
   }
 
   onFbLogin = () => {
@@ -53,6 +83,8 @@ class Register extends React.PureComponent {
   }
 
   render() {
+    const {name, email, password, message} = this.state
+
     return (
       <DefaultLayout>
         <section className="h-100 my-login-page">
@@ -61,23 +93,38 @@ class Register extends React.PureComponent {
               <div className="card-wrapper">
                 <div className="card fat">
                   <div className="card-body">
+                    {!!Object.keys(message).length && (
+                      <div className={`alert alert-${message.type}`}>{message.text}</div>
+                    )}
                     <h4 className="card-title">Đăng ký</h4>
                     <form onSubmit={this.onFormSubmit}>
 
                       <div className="form-group">
                         <label htmlFor="name">Tên</label>
-                        <input id="name" type="text" className="form-control" name="name" required autoFocus/>
+                        <input
+                          value={name}
+                          onChange={this.onInputChange('name')}
+                          id="name"
+                          type="text"
+                          className="form-control"
+                          name="name" required autoFocus/>
                       </div>
 
                       <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input id="email" type="email" className="form-control" name="email" required/>
+                        <input
+                          value={email}
+                          onChange={this.onInputChange('email')}
+                          id="email" type="email" className="form-control" name="email" required/>
                       </div>
 
                       <div className="form-group">
                         <label htmlFor="password">Mật khẩu</label>
-                        <input id="password" type="password" className="form-control" name="password" required
-                               data-eye/>
+                        <input
+                          value={password}
+                          onChange={this.onInputChange('password')}
+                          id="password" type="password" className="form-control" name="password" required
+                          data-eye/>
                       </div>
 
                       <div className="form-group">

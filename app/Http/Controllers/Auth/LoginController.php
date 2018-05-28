@@ -54,6 +54,8 @@ class LoginController extends Controller
             $user->token = $user->createToken('Token')->accessToken;
             return $user;
         }
+
+        return $this->bad('Tên đăng nhập hoặc mật khẩu không đúng');
     }
 
     public function socialLogin(Request $request)

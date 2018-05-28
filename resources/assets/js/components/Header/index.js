@@ -2,8 +2,10 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {routes} from '../../config/route'
 import {connect} from 'react-redux'
+import {logout as logoutAction} from '../../actions/user'
 
 class Header extends React.PureComponent {
+
   render() {
     return (
       <div>
@@ -35,6 +37,13 @@ class Header extends React.PureComponent {
                 </React.Fragment>
               )}
             </ul>
+            {this.props.user.id && (
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <a className="nav-link" onClick={this.props.logout}>Đăng xuất</a>
+                </li>
+              </ul>
+            )}
           </div>
         </nav>
       </div>
@@ -44,4 +53,8 @@ class Header extends React.PureComponent {
 
 const mapStateToProps = ({user}) => ({user})
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutAction())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -2,11 +2,23 @@ import React from 'react'
 import DefaultLayout from '../../components/Layout/DefaultLayout'
 import {Link} from 'react-router-dom'
 import {routes} from '../../config/route'
-import {socialLogin} from '../../services/user'
+import {login, socialLogin} from '../../services/user'
 import {setUser} from '../../actions/user'
 import {connect} from 'react-redux'
 
 class Login extends React.PureComponent {
+
+  state = {
+    email: '',
+    password: '',
+    message: {}
+  }
+
+  onInputChange = (field) => (event) => {
+    this.setState({
+      [field]: event.target.value
+    })
+  }
 
   componentDidMount() {
     window.gapi.load('auth2', () => {
@@ -36,8 +48,25 @@ class Login extends React.PureComponent {
     this.props.history.push('/')
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = async (event) => {
     event.preventDefault()
+    const {email, password} = this.state
+    try {
+      const user = await login({
+        email,
+        password
+      })
+      this.props.setUser(user)
+      this.props.history.push('/')
+    } catch (e) {
+      this.setState({
+        message: {
+          type: 'danger',
+          text: e.response.data.message
+        }
+      })
+    }
+
   }
 
   onFbLogin = () => {
@@ -54,6 +83,8 @@ class Login extends React.PureComponent {
   }
 
   render() {
+    const {email, password, message} = this.state
+
     return (
       <DefaultLayout>
         <section className="h-100 my-login-page">
@@ -62,18 +93,31 @@ class Login extends React.PureComponent {
               <div className="card-wrapper">
                 <div className="card fat">
                   <div className="card-body">
+                    {!!Object.keys(message).length && (
+                      <div className={`alert alert-${message.type}`}>{message.text}</div>
+                    )}
                     <h4 className="card-title">Đăng nhập</h4>
                     <form onSubmit={this.onFormSubmit}>
 
                       <div className="form-group">
                         <label htmlFor="email">E-Mail</label>
-                        <input id="email" type="email" className="form-control" name="email" required/>
+                        <input
+                          value={email}
+                          onChange={this.onInputChange('email')}
+                          type="email" className="form-control"
+                          name="email"
+                          required/>
                       </div>
 
                       <div className="form-group">
                         <label htmlFor="password">Mật khẩu</label>
-                        <input id="password" type="password" className="form-control" name="password" required
-                               data-eye/>
+                        <input
+                          value={password}
+                          onChange={this.onInputChange('password')}
+                          type="password"
+                          className="form-control"
+                          name="password" required
+                          data-eye/>
                       </div>
 
                       <div className="form-group">
